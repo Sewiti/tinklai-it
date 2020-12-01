@@ -20,6 +20,7 @@ class CreateMessagesTable extends Migration
             $table->foreign('from')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('to');
             $table->foreign('to')->references('id')->on('users')->onDelete('cascade');
+            $table->boolean('read')->default(false);
             $table->boolean('deleted')->default(false);
             $table->timestamps();
         });

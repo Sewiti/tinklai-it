@@ -25,7 +25,7 @@
             </thead>
             <tbody>
             @forelse ($conversations as $conv)
-            <tr>
+            <tr class="{{ $conv->from == Auth::user()->id || $conv->read ? 'table-default' : 'table-info' }}">
               <td style="width: 20%;" class="align-middle">
                 {{ $conv->created_at->format('Y-m-d H:i') }}
               </td>

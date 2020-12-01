@@ -18,7 +18,7 @@ class AdminController extends Controller
     {
         $this->getAuthUser();
 
-        $problems = Problem::select('problems.*', 'users.name', 'users.email', 'users.type')
+        $problems = Problem::select('problems.*', 'users.name', 'users.email', 'users.type', \DB::raw('`users`.`id` AS `employee_id`'))
             ->where('deleted', false)
             ->leftJoin('users', 'problems.employee_id', '=', 'users.id')
             ->orderBy('problems.created_at', 'DESC')

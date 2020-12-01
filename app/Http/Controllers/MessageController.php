@@ -35,7 +35,7 @@ class MessageController extends Controller
                 $oth = $pair->b;
 
             array_push($conversations,
-                Message::select('messages.message', 'messages.from', 'messages.to', 'messages.created_at', 'users.id', 'users.name', 'users.email', 'users.type')
+                Message::select('messages.message', 'messages.from', 'messages.to', 'messages.read', 'messages.created_at', 'users.id', 'users.name', 'users.email', 'users.type')
                     ->leftJoin('users', \DB::raw(0), '=', \DB::raw(0))
                     ->where('users.id', '=', $oth)
                     ->where(function ($query) use($pair) {
@@ -88,6 +88,13 @@ class MessageController extends Controller
                     ->where('to', '=', $userId);
             })->orderBy('created_at', 'ASC')
             ->get();
+
+        foreach ($messages as $message) {
+            if ($message->to == $userId) {
+                $message->read = true;
+                $message->save();
+            }
+        }
 
         return view('messages.show', [
             'messages' => $messages,

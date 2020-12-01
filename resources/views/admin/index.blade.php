@@ -17,11 +17,12 @@
           <table class="table">
             <thead>
               <tr>
-                <th style="width: 20%;" class="text-nowrap">Data ir laikas</th>
-                <th style="width: 20%;">Darbuotojas</th>
-                <th style="width: 20%;">Problema</th>
-                <th style="width: 20%;">Statusas</th>
-                <th style="width: 20%;">Peržiūra</th>
+                <th class="text-nowrap">Data ir laikas</th>
+                <th>Darbuotojas</th>
+                <th>Problema</th>
+                <th>Statusas</th>
+                <th>Peržiūra</th>
+                <th>Parašyti žinutę</th>
               </tr>
             </thead>
             <tbody>
@@ -32,26 +33,34 @@
                   (strtotime("now") - strtotime($problem->created_at) >= 7200 ? 'table-danger' : 'table-warning'))
                 }}">
 
-                <td style="width: 20%;" class="align-middle">
+                <td  class="align-middle">
                   {{ $problem->created_at->format('Y-m-d H:i') }}
                 </td>
 
-                <td style="width: 20%;" class="align-middle">
+                <td  class="align-middle">
                   @include('helpers.user', ['user' => $problem, 'noType' => true])
                 </td>
 
-                <td style="width: 20%;" class="align-middle">{{ $problem->title }}</td>
+                <td  class="align-middle">{{ $problem->title }}</td>
 
-                <td style="width: 20%;" class="align-middle">
+                <td  class="align-middle">
 
                   @include('helpers.status', ['status' => $problem->status])
                 </td>
 
-                <td style="width: 20%;" class="align-middle">
+                <td  class="align-middle">
                   <a class="btn btn-outline-dark" href="{{ route('admin.show', ['problemId' => $problem->id]) }}" role="button">
                     Peržiūrėti
                   </a>
                 </td>
+
+                {{-- @if ($problem->status=='registered' && strtotime("now") - strtotime($problem->created_at) >= 7200) --}}
+                <td  class="align-middle">
+                  <a class="btn btn-outline-dark" href="{{ route('messages.show', ['recipientId' => $problem->employee_id]) }}" role="button">
+                    Parašyti
+                  </a>
+                </td>
+                {{-- @endif --}}
 
               </tr>
             @empty
